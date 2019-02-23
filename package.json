@@ -12,5 +12,8 @@
     "messaging"
   ],
   "author": "Chaudhry Junaid Anwar",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.5.3"
+  }
 }
