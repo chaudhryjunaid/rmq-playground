@@ -14,7 +14,9 @@
   "author": "Chaudhry Junaid Anwar",
   "license": "MIT",
   "dependencies": {
-    "amqplib": "^0.5.3"
+    "amqplib": "^0.5.3",
+    "minimist": "^1.2.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "eslint": "^5.14.1",
