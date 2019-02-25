@@ -15,11 +15,11 @@ const main = async () => {
 
     await ch.assertExchange('channel', 'fanout', { durable: false });
     await ch.assertExchange('echo', 'direct', { durable: false });
-    await ch.assertExchange(currentUser, 'direct', { durable: false });
+    await ch.assertExchange('direct', 'topic', { durable: false });
     await ch.assertQueue(currentUser, { durable: false });
     await ch.bindQueue(currentUser, 'channel', '');
     await ch.bindQueue(currentUser, 'echo', currentUser);
-    await ch.bindQueue(currentUser, currentUser, currentUser);
+    await ch.bindQueue(currentUser, 'direct', currentUser);
 
     const rl = readline.createInterface({
       input: process.stdin,
@@ -37,8 +37,10 @@ const main = async () => {
       };
       _.each(handles, (handle) => {
         const user = handle.replace('@', '');
-        if (activeUsers.has(user) || ['channel', 'echo'].includes(user)) {
-          ch.publish(user, user === 'echo' ? currentUser : user, utils.toBuffer(data));
+        if (['channel', 'echo'].includes(user)) {
+          ch.publish(user, currentUser, utils.toBuffer(data));
+        } else if (activeUsers.has(user)) {
+          ch.publish('direct', user, utils.toBuffer(data));
         } else {
           console.log(`${user} is not registered!`);
         }
